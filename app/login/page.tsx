@@ -13,6 +13,7 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
+  const [loginLoading, setLoginLoading] = useState(false);
   // Debug info
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   
