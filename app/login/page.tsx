@@ -13,7 +13,23 @@ function LoginContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const [loginLoading, setLoginLoading] = useState(false);
+  // Debug info
+  const [debugInfo, setDebugInfo] = useState<string[]>([]);
+  
+  useEffect(() => {
+    const debug = [];
+    debug.push(`URL: ${window.location.href}`);
+    debug.push(`Hash: ${window.location.hash}`);
+    debug.push(`Supabase URL: ${process.env.NEXT_PUBLIC_SUPABASE_URL}`);
+    debug.push(`Supabase client: ${supabase ? 'OK' : 'NULL'}`);
+    
+    // Check for tokens in URL
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get('access_token');
+    debug.push(`Access token: ${accessToken ? 'FOUND' : 'NOT FOUND'}`);
+    
+    setDebugInfo(debug);
+  }, []);
 
   useEffect(() => {
     if (user) {
@@ -154,6 +170,14 @@ function LoginContent() {
             <p className="text-xs text-gray-400">
               Authentication is required to use Oryo
             </p>
+          </div>
+          
+          {/* Debug Info */}
+          <div className="mt-4 p-3 bg-black/50 rounded text-xs text-green-400 font-mono">
+            <div className="text-yellow-400 mb-2">DEBUG INFO:</div>
+            {debugInfo.map((info, i) => (
+              <div key={i}>{info}</div>
+            ))}
           </div>
         </motion.div>
       </div>
