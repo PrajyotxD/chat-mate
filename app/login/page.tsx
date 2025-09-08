@@ -61,8 +61,10 @@ function LoginContent() {
   }, [user, router, searchParams, toast]);
 
   const handleLogin = async () => {
-    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
-    console.log('Supabase client:', supabase);
+    const redirectUrl = `${window.location.origin}/auth/callback`;
+    console.log('🔍 Redirect URL being sent:', redirectUrl);
+    console.log('🔍 Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('🔍 Supabase client:', supabase);
     
     if (!supabase) {
       toast({
@@ -79,7 +81,7 @@ function LoginContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: redirectUrl,
         }
       });
 
