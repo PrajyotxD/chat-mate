@@ -211,9 +211,12 @@ export default function Onboarding() {
             <HoverBorderGradient
               containerClassName="rounded-full"
               as="button"
-              className="text-white bg-black px-8 py-4 text-lg"
-              onClick={handleSaveAndContinue}
-              disabled={!selectedProvider || !apiKey || isValidating}
+              className={`text-white px-8 py-4 text-lg ${
+                !selectedProvider || !apiKey || isValidating 
+                  ? "bg-gray-600 cursor-not-allowed" 
+                  : "bg-black"
+              }`}
+              onClick={!selectedProvider || !apiKey || isValidating ? undefined : handleSaveAndContinue}
             >
               <span>{isValidating ? "Validating..." : "Save & Continue"}</span>
             </HoverBorderGradient>
