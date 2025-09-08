@@ -79,7 +79,7 @@ function LoginContent() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `https://oryo.vercel.app`,
+          redirectTo: `${window.location.origin}/auth/callback`,
         }
       });
 
