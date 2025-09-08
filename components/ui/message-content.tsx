@@ -53,7 +53,7 @@ export function MessageContent({ content }: MessageContentProps) {
               {part.content}
             </p>
           ) : (
-            <CodeBlock code={part.content} language={part.language} />
+            <CodeBlock code={part.content} language={part.language || 'text'} />
           )}
         </div>
       ))}
