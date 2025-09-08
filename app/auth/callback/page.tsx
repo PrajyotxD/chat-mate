@@ -14,6 +14,7 @@ export default function AuthCallback() {
       }
 
       try {
+        // Handle the auth callback - this processes the URL fragments
         const { data, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -33,6 +34,30 @@ export default function AuthCallback() {
             router.push("/onboarding");
           }
         } else {
+          // Try to get session from URL hash (for mobile)
+          const hashParams = new URLSearchParams(window.location.hash.substring(1));
+          const accessToken = hashParams.get('access_token');
+          
+          if (accessToken) {
+            // Set the session manually
+            const { error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: hashParams.get('refresh_token') || ''
+            });
+            
+            if (!sessionError) {
+              const apiKey = localStorage.getItem("oryo_api_key");
+              const provider = localStorage.getItem("oryo_provider");
+              
+              if (apiKey && provider) {
+                router.push("/chat");
+              } else {
+                router.push("/onboarding");
+              }
+              return;
+            }
+          }
+          
           router.push('/login');
         }
       } catch (error) {
