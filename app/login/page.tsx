@@ -44,6 +44,9 @@ function LoginContent() {
   }, [user, router, searchParams, toast]);
 
   const handleLogin = async () => {
+    console.log('Supabase URL:', process.env.NEXT_PUBLIC_SUPABASE_URL);
+    console.log('Supabase client:', supabase);
+    
     if (!supabase) {
       toast({
         title: "Authentication Required",
