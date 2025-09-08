@@ -74,14 +74,14 @@ export default function Chat() {
 
   useEffect(() => {
     // Load chat history from localStorage
-    const savedMessages = localStorage.getItem("chatmate_messages");
+    const savedMessages = localStorage.getItem("oryo_messages");
     if (savedMessages) {
       setMessages(JSON.parse(savedMessages));
     }
   }, []);
 
   const saveMessages = (newMessages: Message[]) => {
-    localStorage.setItem("chatmate_messages", JSON.stringify(newMessages));
+    localStorage.setItem("oryo_messages", JSON.stringify(newMessages));
   };
 
   const sendMessage = async () => {
@@ -101,8 +101,8 @@ export default function Chat() {
     setIsTyping(true);
 
     try {
-      const apiKey = localStorage.getItem("chatmate_api_key");
-      const provider = localStorage.getItem("chatmate_provider");
+      const apiKey = localStorage.getItem("oryo_api_key");
+      const provider = localStorage.getItem("oryo_provider");
       
       const response = await fetch("/api/chat", {
         method: "POST",

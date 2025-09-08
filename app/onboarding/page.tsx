@@ -70,8 +70,8 @@ export default function Onboarding() {
       const data = await response.json();
       
       if (data.valid) {
-        localStorage.setItem("chatmate_provider", selectedProvider);
-        localStorage.setItem("chatmate_api_key", apiKey);
+        localStorage.setItem("oryo_provider", selectedProvider);
+        localStorage.setItem("oryo_api_key", apiKey);
         router.push("/chat");
       } else {
         setValidationError(data.error || "Invalid API key");

@@ -137,19 +137,19 @@ export default function Chat() {
 
   useEffect(() => {
     // Load chat history on component mount
-    const savedHistory = localStorage.getItem('chatmate_history');
+    const savedHistory = localStorage.getItem('oryo_history');
     if (savedHistory) {
       setChatHistory(JSON.parse(savedHistory));
     }
     
     // Load custom personalities
-    const savedPersonalities = localStorage.getItem('chatmate_personalities');
+    const savedPersonalities = localStorage.getItem('oryo_personalities');
     if (savedPersonalities) {
       setCustomPersonalities(JSON.parse(savedPersonalities));
     }
     
     // Load available tags
-    const savedTags = localStorage.getItem('chatmate_tags');
+    const savedTags = localStorage.getItem('oryo_tags');
     if (savedTags) {
       setAvailableTags(JSON.parse(savedTags));
     }
@@ -225,7 +225,7 @@ export default function Chat() {
     const limitedHistory = updatedHistory.slice(0, 20);
     
     setChatHistory(limitedHistory);
-    localStorage.setItem('chatmate_history', JSON.stringify(limitedHistory));
+    localStorage.setItem('oryo_history', JSON.stringify(limitedHistory));
     setCurrentChatId(chatId);
   };
 
@@ -262,7 +262,7 @@ export default function Chat() {
       content = messages.map(msg => 
         `[${new Date(msg.timestamp).toLocaleString()}] ${msg.sender.toUpperCase()}: ${msg.content}`
       ).join('\n\n');
-      filename = `chatmate-conversation-${new Date().toISOString().split('T')[0]}.txt`;
+      filename = `oryo-conversation-${new Date().toISOString().split('T')[0]}.txt`;
       mimeType = 'text/plain';
     } else {
       content = JSON.stringify({
@@ -270,7 +270,7 @@ export default function Chat() {
         personalityMode,
         messages
       }, null, 2);
-      filename = `chatmate-conversation-${new Date().toISOString().split('T')[0]}.json`;
+      filename = `oryo-conversation-${new Date().toISOString().split('T')[0]}.json`;
       mimeType = 'application/json';
     }
 
@@ -337,7 +337,7 @@ export default function Chat() {
 
     const updated = [...customPersonalities, personality];
     setCustomPersonalities(updated);
-    localStorage.setItem('chatmate_personalities', JSON.stringify(updated));
+    localStorage.setItem('oryo_personalities', JSON.stringify(updated));
     
     setNewPersonality({ name: "", emoji: "🤖", description: "", prompt: "" });
     setShowPersonalityModal(false);
@@ -346,7 +346,7 @@ export default function Chat() {
   const deletePersonality = (id: string) => {
     const updated = customPersonalities.filter(p => p.id !== id);
     setCustomPersonalities(updated);
-    localStorage.setItem('chatmate_personalities', JSON.stringify(updated));
+    localStorage.setItem('oryo_personalities', JSON.stringify(updated));
     
     if (personalityMode === id) {
       setPersonalityMode("casual");
@@ -358,7 +358,7 @@ export default function Chat() {
     
     const updated = [...availableTags, newTag.trim()];
     setAvailableTags(updated);
-    localStorage.setItem('chatmate_tags', JSON.stringify(updated));
+    localStorage.setItem('oryo_tags', JSON.stringify(updated));
     setNewTag("");
   };
 
@@ -402,8 +402,8 @@ export default function Chat() {
     setIsTyping(true);
 
     try {
-      const apiKey = localStorage.getItem("chatmate_api_key");
-      const provider = localStorage.getItem("chatmate_provider");
+      const apiKey = localStorage.getItem("oryo_api_key");
+      const provider = localStorage.getItem("oryo_provider");
       
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -486,8 +486,8 @@ export default function Chat() {
     setMessages(messagesWithPlaceholder);
 
     try {
-      const apiKey = localStorage.getItem("chatmate_api_key");
-      const provider = localStorage.getItem("chatmate_provider");
+      const apiKey = localStorage.getItem("oryo_api_key");
+      const provider = localStorage.getItem("oryo_provider");
       
       const response = await fetch("/api/chat", {
         method: "POST",

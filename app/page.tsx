@@ -16,8 +16,8 @@ export default function Home() {
   useEffect(() => {
     if (!isLoading && user) {
       // Check if user has completed onboarding
-      const apiKey = localStorage.getItem("chatmate_api_key");
-      const provider = localStorage.getItem("chatmate_provider");
+      const apiKey = localStorage.getItem("oryo_api_key");
+      const provider = localStorage.getItem("oryo_provider");
       
       if (apiKey && provider) {
         router.push("/chat");
