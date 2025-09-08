@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Handle OAuth callback from URL
     const handleAuthCallback = async () => {
-      const { data, error } = await supabase.auth.getSession();
+      const { data, error } = await supabase!.auth.getSession();
       
       if (data?.session) {
         setUser(mapSupabaseUser(data.session.user));
@@ -44,7 +44,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         
         if (accessToken && refreshToken) {
           try {
-            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+            const { data: sessionData, error: sessionError } = await supabase!.auth.setSession({
               access_token: accessToken,
               refresh_token: refreshToken
             });
@@ -65,7 +65,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     handleAuthCallback();
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { data: { subscription } } = supabase!.auth.onAuthStateChange((_event, session) => {
       if (session?.user) {
         setUser(mapSupabaseUser(session.user));
       } else {
