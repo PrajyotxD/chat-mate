@@ -5,28 +5,14 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Loader } from "@/components/ui/loader";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { MessageSquare, Shield, Zap, Brain } from "lucide-react";
 
 export default function Home() {
   const router = useRouter();
   const { user, isLoading } = useAuth();
-  const [debugInfo, setDebugInfo] = useState<string[]>([]);
 
   useEffect(() => {
-    // Debug info for root page
-    const debug = [];
-    debug.push(`URL: ${window.location.href}`);
-    debug.push(`Hash: ${window.location.hash}`);
-    
-    // Check for tokens in URL
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    const accessToken = hashParams.get('access_token');
-    debug.push(`Access token: ${accessToken ? 'FOUND' : 'NOT FOUND'}`);
-    debug.push(`User: ${user ? 'LOGGED IN' : 'NOT LOGGED IN'}`);
-    
-    setDebugInfo(debug);
-
     if (!isLoading && user) {
       // Check if user has completed onboarding
       const apiKey = localStorage.getItem("oryo_api_key");
@@ -129,14 +115,6 @@ export default function Home() {
             </HoverBorderGradient>
           </motion.div>
         )}
-
-        {/* Debug Info */}
-        <div className="mt-8 p-3 bg-black/50 rounded text-xs text-green-400 font-mono max-w-md">
-          <div className="text-yellow-400 mb-2">HOME DEBUG INFO:</div>
-          {debugInfo.map((info, i) => (
-            <div key={i}>{info}</div>
-          ))}
-        </div>
       </div>
     </AuroraBackground>
   );
