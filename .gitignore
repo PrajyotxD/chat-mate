@@ -97,3 +97,4 @@ Thumbs.db
 
 # Certificates
 certificates/
+.vercel
