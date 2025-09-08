@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/lib/supabase";
+import { analytics } from "@/lib/analytics";
 
 function LoginContent() {
   const { user, isLoading } = useAuth();
@@ -16,6 +17,9 @@ function LoginContent() {
 
   useEffect(() => {
     if (user) {
+      // Track successful login
+      analytics.login();
+      
       // Check if user has completed onboarding
       const apiKey = localStorage.getItem("oryo_api_key");
       const provider = localStorage.getItem("oryo_provider");
@@ -30,6 +34,7 @@ function LoginContent() {
     // Check for auth errors from URL params
     const error = searchParams.get('error');
     if (error === 'auth_failed') {
+      analytics.error('auth_failed', 'Google authentication failed');
       toast({
         title: "Authentication Failed",
         description: "There was an error signing you in. Please try again.",
