@@ -50,11 +50,7 @@ export default function Home() {
   ];
 
   const handleGetStarted = () => {
-    if (user) {
-      router.push("/onboarding");
-    } else {
-      router.push("/login");
-    }
+    router.push("/login");
   };
 
   return (

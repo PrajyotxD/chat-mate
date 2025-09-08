@@ -53,19 +53,40 @@ Open [http://localhost:3000](http://localhost:3000)
 
 ### Setup
 1. Run the app locally or visit the deployed version
-2. Go through onboarding to add your API keys
-3. Keys are stored securely in your browser's localStorage
+2. Sign in with Google (optional) or skip authentication
+3. Go through onboarding to add your API keys
+4. Keys are stored securely in your browser's localStorage
 
 See [SECURITY.md](./SECURITY.md) for detailed security information.
 
 ## Environment Variables
 
-Only needed for optional Supabase authentication:
+### Required for Google Authentication (Optional)
 
+1. **Create Supabase Project**:
+   - Go to https://supabase.com/dashboard
+   - Create a new project
+   - Go to Settings → API
+   - Copy your Project URL and anon public key
+
+2. **Configure Google OAuth**:
+   - In Supabase dashboard: Authentication → Providers
+   - Enable Google provider
+   - Add your Google OAuth credentials
+   - Set redirect URL: `https://your-domain.com/auth/callback`
+
+3. **Environment Variables**:
 ```bash
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
+
+### For Vercel Deployment
+Add these environment variables in Vercel dashboard:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+**Note**: The app works without authentication - users can skip sign-in and go directly to onboarding.
 
 ## Contributing
 

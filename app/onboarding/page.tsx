@@ -20,6 +20,7 @@ export default function Onboarding() {
   useEffect(() => {
     if (!isLoading && !user) {
       router.push('/login');
+      return;
     }
   }, [user, isLoading, router]);
   
@@ -135,6 +136,10 @@ export default function Onboarding() {
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-400"></div>
       </div>
     );
+  }
+
+  if (!user) {
+    return null; // Will redirect to login
   }
 
   if (!user) {
