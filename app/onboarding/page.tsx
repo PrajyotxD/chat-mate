@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
@@ -12,10 +12,84 @@ import { Lock, Shield, Eye, EyeOff } from "lucide-react";
 
 type Provider = "openai" | "groq" | "anthropic" | "gemini";
 
+// Logos as SVG components for performance and scalability
+const OpenAILogo = () => (
+  <svg width="32" height="32" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M35.343 26.1233C32.8843 28.1433 29.92 29.4533 26.7013 29.86L26.9513 29.9233L26.9363 29.93L26.9283 29.9333C26.8733 29.9533 26.8153 29.9733 26.7583 29.99L26.7013 30.0066V30.0133C26.1013 30.18 25.4833 30.3066 24.8533 30.3933L24.8533 30.3933L15.1483 23.8366L15.1483 14.8L20.4333 11.99L20.4333 20.8166L24.8533 23.5833L24.8533 14.5533L29.92 11.99L29.92 20.5666C32.8113 19.2466 34.9633 16.83 35.7583 13.93L20.4333 4.99997L5.10833 13.93C5.10833 22.96 11.8933 30.24 20.4333 31.9233C20.4333 31.9233 20.4333 34.8133 20.4333 34.8133C10.0483 32.9333 3.13833 23.9333 3.13833 13.93L20.4333 3.0333L37.7283 13.93C36.9333 19.3333 35.343 26.1233 35.343 26.1233Z" fill="white"/>
+    <path d="M20.4333 34.8133C20.4333 34.8133 20.4333 31.9233 20.4333 31.9233C28.9733 30.24 35.7583 22.96 35.7583 13.93L20.4333 4.99997L20.4333 14.8L15.1483 17.61L15.1483 23.8366L20.4333 26.8933L20.4333 34.8133Z" fill="white"/>
+  </svg>
+);
+
+const GroqLogo = () => (
+  <svg width="32" height="32" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+    <path fill="white" d="M128 24a104 104 0 1 0 104 104A104.11 104.11 0 0 0 128 24m43.42 140.42a12 12 0 1 1-17 17L128 154.84l-26.42 26.58a12 12 0 1 1-17-17L111 137.83l-26.59-26.42a12 12 0 1 1 17-17L128 120.84l26.42-26.59a12 12 0 0 1 17 17L145 137.83Z"/>
+  </svg>
+);
+
+const AnthropicLogo = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-12h2v8h-2v-8zm0 10h2v2h-2v-2z" fill="white"/>
+  </svg>
+);
+
+const GeminiLogo = () => (
+  <svg width="32" height="32" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+    <path fill="white" d="M12 2c5.523 0 10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2m0 2a8 8 0 1 0 0 16 8 8 0 0 0 0-16m-3.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m7 0a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3m-3.5 5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7"/>
+  </svg>
+);
+
+const providers = [
+  {
+    id: "openai" as Provider,
+    name: "OpenAI",
+    description: "GPT-4, GPT-3.5 Turbo",
+    logo: <OpenAILogo />,
+  },
+  {
+    id: "groq" as Provider,
+    name: "Groq",
+    description: "Lightning fast inference",
+    logo: <GroqLogo />,
+  },
+  {
+    id: "anthropic" as Provider,
+    name: "Anthropic",
+    description: "Claude 3 models",
+    logo: <AnthropicLogo />,
+  },
+  {
+    id: "gemini" as Provider,
+    name: "Gemini",
+    description: "Google's AI models",
+    logo: <GeminiLogo />,
+  }
+];
+
+// Memoized ProviderCard to prevent re-renders
+const ProviderCard = memo(({ provider, selectedProvider, onSelect }: { provider: any, selectedProvider: Provider | null, onSelect: (id: Provider) => void }) => (
+  <div 
+    className={`cursor-pointer transition-all duration-300 bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-4 border ${
+      selectedProvider === provider.id
+        ? "border-blue-400 bg-blue-500/20"
+        : "border-white/20 hover:border-white/40"
+    }`}
+    onClick={() => onSelect(provider.id)}
+  >
+    <div className="text-center">
+      <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
+        {provider.logo}
+      </div>
+      <h3 className="text-xs sm:text-sm font-semibold text-white">{provider.name}</h3>
+      <p className="text-xs text-gray-300 hidden sm:block">{provider.description}</p>
+    </div>
+  </div>
+));
+ProviderCard.displayName = 'ProviderCard';
+
 export default function Onboarding() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
-  const { toast } = useToast();
+  const { toast } = use-toast();
   
   useEffect(() => {
     if (!isLoading && !user) {
@@ -29,33 +103,6 @@ export default function Onboarding() {
   const [showApiKey, setShowApiKey] = useState(false);
   const [isValidating, setIsValidating] = useState(false);
   const [validationError, setValidationError] = useState("");
-
-  const providers = [
-    {
-      id: "openai" as Provider,
-      name: "OpenAI",
-      description: "GPT-4, GPT-3.5 Turbo",
-      color: "from-green-400 to-blue-500"
-    },
-    {
-      id: "groq" as Provider,
-      name: "Groq",
-      description: "Lightning fast inference",
-      color: "from-orange-400 to-red-500"
-    },
-    {
-      id: "anthropic" as Provider,
-      name: "Anthropic",
-      description: "Claude 3 models",
-      color: "from-purple-400 to-pink-500"
-    },
-    {
-      id: "gemini" as Provider,
-      name: "Gemini",
-      description: "Google's AI models",
-      color: "from-blue-400 to-cyan-500"
-    }
-  ];
 
   const handleSaveAndContinue = async () => {
     if (!selectedProvider || !apiKey) {
@@ -78,7 +125,8 @@ export default function Onboarding() {
       });
       
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(`HTTP ${response.status}: ${errorData.error || response.statusText}`);
       }
       
       const data = await response.json();
@@ -107,16 +155,11 @@ export default function Onboarding() {
       console.error('Validation error:', error);
       
       let errorMessage = "Failed to validate API key";
-      
-      if (error.message.includes('401')) {
-        errorMessage = "Invalid API key. Please check your key and try again.";
-      } else if (error.message.includes('429')) {
-        errorMessage = "Rate limit exceeded. Please wait a moment and try again.";
-      } else if (error.message.includes('500')) {
-        errorMessage = "Server error. Please try again later.";
-      } else if (error.message.includes('network') || error.message.includes('fetch')) {
-        errorMessage = "Network error. Please check your connection.";
-      }
+      if (error.message.includes('401')) errorMessage = "Invalid API key. Please check your key and try again.";
+      else if (error.message.includes('429')) errorMessage = "Rate limit exceeded. Please wait and try again.";
+      else if (error.message.includes('500')) errorMessage = "Server error. Please try again later.";
+      else if (error.message.includes('network') || error.message.includes('fetch')) errorMessage = "Network error. Check your connection.";
+      else errorMessage = error.message;
       
       setValidationError(errorMessage);
       
@@ -142,17 +185,13 @@ export default function Onboarding() {
     return null; // Will redirect to login
   }
 
-  if (!user) {
-    return null; // Will redirect to login
-  }
-
   return (
     <AuroraBackground>
       <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 sm:p-8 w-full max-w-md sm:max-w-2xl border border-white/20"
+          className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 sm:p-8 w-full max-w-md sm:max-w-2xl lg:max-w-4xl border border-white/20"
         >
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8">
@@ -167,25 +206,14 @@ export default function Onboarding() {
           {/* Provider Selection */}
           <div className="mb-4 sm:mb-6">
             <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white text-center">Select AI Provider</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
               {providers.map((provider) => (
-                <div 
+                <ProviderCard 
                   key={provider.id}
-                  className={`cursor-pointer transition-all duration-300 bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-4 border ${
-                    selectedProvider === provider.id
-                      ? "border-blue-400 bg-blue-500/20"
-                      : "border-white/20 hover:border-white/40"
-                  }`}
-                  onClick={() => setSelectedProvider(provider.id)}
-                >
-                  <div className="text-center">
-                    <div
-                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r ${provider.color} mx-auto mb-2`}
-                    />
-                    <h3 className="text-xs sm:text-sm font-semibold text-white">{provider.name}</h3>
-                    <p className="text-xs text-gray-300 hidden sm:block">{provider.description}</p>
-                  </div>
-                </div>
+                  provider={provider}
+                  selectedProvider={selectedProvider}
+                  onSelect={setSelectedProvider}
+                />
               ))}
             </div>
           </div>
@@ -206,7 +234,7 @@ export default function Onboarding() {
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
                     Enter your {providers.find(p => p.id === selectedProvider)?.name} API key
-                  </p>
+                  p>
                   <div className="relative">
                     <Input
                       type={showApiKey ? "text" : "password"}
