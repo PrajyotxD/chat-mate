@@ -761,7 +761,7 @@ export default function Chat() {
         <div className="bg-gray-800 border-b border-gray-700 px-6 py-3 flex-shrink-0">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-300">ChatMate</span>
+              <span className="text-sm text-gray-300">Oryo</span>
               {showSearch && (
                 <div className="flex items-center gap-2">
                   <Input
@@ -835,7 +835,7 @@ export default function Chat() {
             /* Welcome Screen */
             <div className="flex-1 flex flex-col items-center justify-center p-8">
               <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold mb-4 text-white">ChatMate</h1>
+                <h1 className="text-4xl font-bold mb-4 text-white">Oryo</h1>
                 <p className="text-gray-400 text-lg">What do you want to know?</p>
               </div>
               

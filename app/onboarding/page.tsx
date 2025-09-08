@@ -107,7 +107,7 @@ export default function Onboarding() {
           {/* Header */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
-              Setup ChatMate
+              Setup Oryo
             </h1>
             <p className="text-lg text-muted-foreground">
               Choose your AI provider and enter your API key to get started
