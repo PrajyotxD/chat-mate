@@ -234,7 +234,7 @@ export default function Onboarding() {
                   </div>
                   <p className="text-sm text-muted-foreground mb-4">
                     Enter your {providers.find(p => p.id === selectedProvider)?.name} API key
-                  p>
+                  </p>
                   <div className="relative">
                     <Input
                       type={showApiKey ? "text" : "password"}
