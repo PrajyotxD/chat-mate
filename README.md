@@ -26,11 +26,46 @@ A modern AI chat application supporting multiple AI providers with personality m
 ## Getting Started
 
 ```bash
+# Clone the repository
+git clone https://github.com/PrajyotxD/oryo.git
+cd oryo
+
+# Install dependencies
 npm install
+
+# Copy environment template (optional - only for Supabase auth)
+cp .env.example .env.local
+
+# Start development server
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000)
+
+## 🔐 Security & API Keys
+
+**Important**: This app uses a secure, privacy-first approach:
+
+- ✅ **Your API keys stay in your browser** - never sent to our servers
+- ✅ **No server-side storage** - we never see your keys
+- ✅ **Direct communication** - your keys go straight to AI providers
+- ❌ **Never commit API keys** - they're not in environment variables
+
+### Setup
+1. Run the app locally or visit the deployed version
+2. Go through onboarding to add your API keys
+3. Keys are stored securely in your browser's localStorage
+
+See [SECURITY.md](./SECURITY.md) for detailed security information.
+
+## Environment Variables
+
+Only needed for optional Supabase authentication:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
 
 ## Contributing
 
@@ -41,6 +76,8 @@ We welcome contributions! Please feel free to:
 - Submit pull requests
 - Improve documentation
 - Add new AI provider integrations
+
+**Security Note**: Never include API keys in pull requests or issues.
 
 ## License
 
