@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useToast } from "@/hooks/use-toast";
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { CometCard } from "@/components/ui/comet-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
@@ -14,6 +15,7 @@ type Provider = "openai" | "groq" | "anthropic" | "gemini";
 export default function Onboarding() {
   const { user, isLoading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   
   useEffect(() => {
     if (!isLoading && !user) {
@@ -55,7 +57,14 @@ export default function Onboarding() {
   ];
 
   const handleSaveAndContinue = async () => {
-    if (!selectedProvider || !apiKey) return;
+    if (!selectedProvider || !apiKey) {
+      toast({
+        title: "Missing Information",
+        description: "Please select a provider and enter your API key.",
+        variant: "destructive",
+      });
+      return;
+    }
     
     setIsValidating(true);
     setValidationError("");
@@ -67,17 +76,54 @@ export default function Onboarding() {
         body: JSON.stringify({ apiKey, provider: selectedProvider })
       });
       
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
       const data = await response.json();
       
       if (data.valid) {
         localStorage.setItem("oryo_provider", selectedProvider);
         localStorage.setItem("oryo_api_key", apiKey);
+        
+        toast({
+          title: "Success!",
+          description: `${selectedProvider.toUpperCase()} API key validated successfully.`,
+        });
+        
         router.push("/chat");
       } else {
-        setValidationError(data.error || "Invalid API key");
+        const errorMsg = data.error || "Invalid API key";
+        setValidationError(errorMsg);
+        
+        toast({
+          title: "Validation Failed",
+          description: errorMsg,
+          variant: "destructive",
+        });
       }
-    } catch (error) {
-      setValidationError("Failed to validate API key");
+    } catch (error: any) {
+      console.error('Validation error:', error);
+      
+      let errorMessage = "Failed to validate API key";
+      
+      if (error.message.includes('401')) {
+        errorMessage = "Invalid API key. Please check your key and try again.";
+      } else if (error.message.includes('429')) {
+        errorMessage = "Rate limit exceeded. Please wait a moment and try again.";
+      } else if (error.message.includes('500')) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        errorMessage = "Network error. Please check your connection.";
+      }
+      
+      setValidationError(errorMessage);
+      
+      toast({
+        title: "Validation Error",
+        description: errorMessage,
+        variant: "destructive",
+      });
     } finally {
       setIsValidating(false);
     }

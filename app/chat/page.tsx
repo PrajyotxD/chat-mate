@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/auth-context";
+import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
 import { MessageContent } from "@/components/ui/message-content";
 import { TypingIndicator } from "@/components/ui/typing-indicator";
@@ -58,6 +59,7 @@ interface Message {
 export default function Chat() {
   const { user, logout, isLoading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   
   useEffect(() => {
     if (!isLoading && !user) {
@@ -489,6 +491,16 @@ export default function Chat() {
       const apiKey = localStorage.getItem("oryo_api_key");
       const provider = localStorage.getItem("oryo_provider");
       
+      if (!apiKey || !provider) {
+        toast({
+          title: "Setup Required",
+          description: "Please configure your API key in settings first.",
+          variant: "destructive",
+        });
+        setMessages(prev => prev.slice(0, -1)); // Remove placeholder
+        return;
+      }
+      
       const response = await fetch("/api/chat", {
         method: "POST",
         headers: { 
@@ -502,6 +514,11 @@ export default function Chat() {
           history: messages.slice(-10)
         })
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.error || `HTTP ${response.status}: ${response.statusText}`);
+      }
 
       const data = await response.json();
       const fullResponse = data.response || "Sorry, I couldn't process your request.";
@@ -523,8 +540,37 @@ export default function Chat() {
         await new Promise(resolve => setTimeout(resolve, 50));
       }
       
-    } catch (error) {
-      const errorMessage = "Sorry, I couldn't process your request.";
+    } catch (error: any) {
+      console.error('Chat error:', error);
+      
+      let errorMessage = "Sorry, I couldn't process your request.";
+      let toastTitle = "Error";
+      let toastDescription = "Failed to send message. Please try again.";
+      
+      if (error.message.includes('401')) {
+        errorMessage = "Invalid API key. Please check your settings.";
+        toastTitle = "Authentication Error";
+        toastDescription = "Your API key appears to be invalid. Please update it in settings.";
+      } else if (error.message.includes('429')) {
+        errorMessage = "Rate limit exceeded. Please wait a moment.";
+        toastTitle = "Rate Limited";
+        toastDescription = "Too many requests. Please wait before sending another message.";
+      } else if (error.message.includes('500')) {
+        errorMessage = "Server error. Please try again later.";
+        toastTitle = "Server Error";
+        toastDescription = "The AI service is temporarily unavailable.";
+      } else if (error.message.includes('network') || error.message.includes('fetch')) {
+        errorMessage = "Network error. Please check your connection.";
+        toastTitle = "Connection Error";
+        toastDescription = "Unable to connect to the service. Check your internet connection.";
+      }
+      
+      toast({
+        title: toastTitle,
+        description: toastDescription,
+        variant: "destructive",
+      });
+      
       setMessages(prev => prev.map(msg => 
         msg.id === aiMessageId 
           ? { ...msg, content: errorMessage }
