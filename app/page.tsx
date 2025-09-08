@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
 import { AuroraBackground } from "@/components/ui/aurora-background";
-import { CometCard } from "@/components/ui/comet-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { Loader } from "@/components/ui/loader";
 import { useRouter } from "next/navigation";
@@ -85,25 +84,30 @@ export default function Home() {
           className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mb-12"
         >
           {features.map((feature, index) => (
-            <CometCard key={index}>
-              <div className="p-6 text-center rounded-2xl">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 * index }}
+              className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20"
+            >
+              <div className="text-center">
                 <div className="text-white mb-4 flex justify-center">
                   {feature.icon}
                 </div>
-                <h3 className="text-lg font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-muted-foreground">{feature.description}</p>
+                <h3 className="text-lg font-semibold text-white mb-2">{feature.title}</h3>
+                <p className="text-sm text-gray-300">{feature.description}</p>
               </div>
-            </CometCard>
+            </motion.div>
           ))}
         </motion.div>
 
-        {/* Buttons */}
+        {/* Get Started Button */}
         {!isLoading && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="flex flex-col sm:flex-row gap-4"
           >
             <HoverBorderGradient
               containerClassName="rounded-full"
@@ -112,14 +116,6 @@ export default function Home() {
               onClick={handleGetStarted}
             >
               <span>Get Started</span>
-            </HoverBorderGradient>
-            <HoverBorderGradient
-              containerClassName="rounded-full"
-              as="button"
-              className="text-white bg-black text-lg px-8 py-4"
-              onClick={() => router.push("/comet")}
-            >
-              <span>View Comet Demo</span>
             </HoverBorderGradient>
           </motion.div>
         )}
