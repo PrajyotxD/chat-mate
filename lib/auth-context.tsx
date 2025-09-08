@@ -30,13 +30,39 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
 
-    // Get initial session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session?.user) {
-        setUser(mapSupabaseUser(session.user));
+    // Handle OAuth callback from URL
+    const handleAuthCallback = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (data?.session) {
+        setUser(mapSupabaseUser(data.session.user));
+      } else {
+        // Check if we have auth tokens in URL hash (mobile OAuth)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const accessToken = hashParams.get('access_token');
+        const refreshToken = hashParams.get('refresh_token');
+        
+        if (accessToken && refreshToken) {
+          try {
+            const { data: sessionData, error: sessionError } = await supabase.auth.setSession({
+              access_token: accessToken,
+              refresh_token: refreshToken
+            });
+            
+            if (sessionData?.session && !sessionError) {
+              setUser(mapSupabaseUser(sessionData.session.user));
+              // Clean URL
+              window.history.replaceState({}, document.title, window.location.pathname);
+            }
+          } catch (err) {
+            console.error('Session setup error:', err);
+          }
+        }
       }
       setIsLoading(false);
-    });
+    };
+
+    handleAuthCallback();
 
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
