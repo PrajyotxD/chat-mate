@@ -1,126 +1,78 @@
-# ChatMate Changelog
+# Oryo - Changelog
 
-All notable changes to this project will be documented in this file.
+## Version 1.0.0 - Complete Rebrand & Launch
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+### 🎯 Project Rebrand
+- **Renamed** from ChatMate to **Oryo**
+- Updated all branding, logos, and references
+- Changed project folder name to `oryo`
+- Updated GitHub repository: https://github.com/PrajyotxD/oryo
+- Deployed to Vercel: https://oryo.vercel.app
 
-## [Unreleased]
+### 🎨 UI/UX Improvements
+- **Landing Page Redesign**
+  - Removed "View Comet Demo" button
+  - Updated feature cards to match login page style
+  - Added Aurora background with animations
+  - Responsive design for all screen sizes
+  - Clean, modern card layout with backdrop blur
 
-### Added
-- **Message Copy Buttons**: Added copy functionality to all messages with hover effect
-  - Copy button appears on hover for both user and AI messages
-  - Visual feedback with checkmark icon when copied successfully
-  - Automatic timeout to reset copy state after 2 seconds
-  - Uses native clipboard API for reliable copying
-- **Keyboard Shortcuts**: Implemented essential keyboard shortcuts for improved UX
-  - `Ctrl+K` - Start new chat (clears current conversation)
-  - `Ctrl+/` - Toggle search functionality
-  - `Ctrl+Enter` - Send message (alternative to Enter)
-  - `Escape` - Clear input field or close search
-  - `Enter` - Send message (unless Shift is held for new line)
-- **Export Functionality**: Added conversation export capabilities
-  - Export as Text (.txt) - Human-readable format with timestamps
-  - Export as JSON (.json) - Structured data with metadata
-  - Export button appears in top bar when messages exist
-  - Dropdown menu for format selection
-  - Automatic filename generation with date
-- **Message Search**: Implemented real-time message filtering
-  - Toggle search with button or Ctrl+/ shortcut
-  - Real-time filtering as you type
-  - Case-insensitive search across all message content
-  - Results counter showing number of matches
-  - Search input auto-focus when opened
-  - Clear search with Escape key
-- **Streaming Responses**: Added ChatGPT-like streaming text effect
-  - AI responses appear word by word for better engagement
-  - Smooth typing animation with 50ms delay between words
-  - Maintains existing typing indicator during initial processing
-  - Placeholder message created immediately for streaming
-  - Enhanced user experience with real-time response building
-- **File Upload Support**: Added drag & drop file functionality
-  - Drag & drop files directly into chat area
-  - File upload button with paperclip icon
-  - Support for images, text files, PDFs, and JSON
-  - 10MB file size limit with validation
-  - File preview for images in messages
-  - File metadata display (name, size)
-  - Visual drag overlay with instructions
-  - File removal option before sending
-- **Custom Personalities**: Added ability to create custom AI personas
-  - Create custom personalities with name, emoji, and description
-  - Optional custom system prompts for specific AI behavior
-  - Persistent storage in localStorage
-  - Delete custom personalities with confirmation
-  - Plus button in personality section for easy access
-  - Modal interface for personality creation
-  - Automatic fallback to default personality when deleted
-- **Chat Organization**: Added tagging system for conversation management
-  - Create and manage custom tags for conversations
-  - Tag conversations during chat or retroactively
-  - Visual tag display in chat history with truncation
-  - Tag selection modal with toggle functionality
-  - Current chat tags displayed in sidebar
-  - Persistent tag storage across sessions
-  - Tag button in history section for easy access
-- **Authentication System**: Added Google sign-in option
-  - Real OAuth authentication with Google provider
-  - OAuth API route for secure token exchange
-  - User profile display in chat sidebar with avatar
-  - Logout functionality with session management
-  - Protected routes with authentication checks
-  - User data persistence in localStorage
-  - Automatic redirection based on auth state
-  - Login page with branded design and AuroraBackground
-  - Authentication context for global state management
-  - Clean glassmorphism login card with subtle transparency
-  - Minimal design without colors or animations
-  - Auth callback page for OAuth flow completion
-  - Working Google Cloud Console OAuth integration
-- Initial changelog creation to track all future implementations
+- **Login Page**
+  - Streamlined Google OAuth integration
+  - Glass morphism design with backdrop blur
+  - Consistent styling with landing page
 
-### Changed
+- **Chat Interface**
+  - Modern sidebar with user profile
+  - Real-time typing indicators
+  - File upload with drag & drop support
+  - Export functionality (TXT/JSON)
+  - Search through chat history
+  - Personality mode switching
 
-### Deprecated
+### 🔧 Technical Updates
+- **Framework**: Next.js 15 + React 19 + TypeScript
+- **Styling**: Tailwind CSS v4 + ShadCN UI + Aceternity UI
+- **Animations**: Framer Motion for smooth interactions
+- **Icons**: Lucide React icon library
+- **Authentication**: Supabase (optional)
 
-### Removed
+### 🚀 Features Added
+- **Multiple AI Providers**: OpenAI, Groq, Anthropic, Gemini
+- **Personality Modes**: Study Buddy, Code Helper, Casual Chat + custom
+- **File Support**: Images, text files, PDFs, JSON
+- **Chat Management**: History, tagging, search, export
+- **Voice Input**: Speech-to-text (HTTPS required)
+- **Keyboard Shortcuts**: 
+  - Ctrl+K (new chat)
+  - Ctrl+/ (search)
+  - Ctrl+Enter (send)
+- **Privacy First**: API keys stored locally
 
-### Fixed
-- OAuth redirect URI handling - now uses dynamic URLs instead of hardcoded environment variables
-- Google and GitHub OAuth flow URL construction for proper authentication
+### 🔄 Data Migration
+- Updated localStorage keys from `chatmate_*` to `oryo_*`
+- Export filenames changed to `oryo-conversation-*`
+- Maintained backward compatibility for existing users
 
-### Security
+### 🛠️ Development Setup
+```bash
+npm install
+npm run dev
+```
+
+### 📦 Deployment
+- **Platform**: Vercel
+- **Auto-deployment**: Connected to GitHub master branch
+- **Environment**: Production ready with optimizations
+
+### 🎯 Next Steps
+- Add Supabase environment variables for authentication
+- Implement additional AI provider integrations
+- Add more personality modes
+- Enhance file processing capabilities
 
 ---
 
-## Implementation Progress
-
-Based on function.md roadmap, the following features are planned for implementation:
-
-### Phase 1 (Quick Wins) - Priority Features ✅ **ALL COMPLETED**
-- [x] Message copy buttons ✅ **COMPLETED**
-- [x] Keyboard shortcuts (Ctrl+K, Ctrl+/, Ctrl+Enter, Esc) ✅ **COMPLETED**
-- [x] Export functionality (PDF/text) ✅ **COMPLETED**
-- [x] Message search with filters ✅ **COMPLETED**
-
-### Phase 2 (UX Improvements) ✅ **ALL COMPLETED**
-- [x] Streaming responses with typing indicators ✅ **COMPLETED**
-- [x] File upload support (drag & drop) ✅ **COMPLETED**
-- [x] Custom personalities creation ✅ **COMPLETED**
-- [x] Chat organization (folders/tags) ✅ **COMPLETED**
-
-### Phase 3 (Advanced Features) - Started
-- [x] Authentication system (Google/GitHub) ✅ **COMPLETED**
-- [ ] PWA implementation
-- [ ] Voice features (TTS, voice commands)
-- [ ] Multi-language support
-
-### Phase 4 (Analytics & Optimization)
-- [ ] Usage analytics dashboard
-- [ ] Performance optimizations
-- [ ] Plugin system architecture
-- [ ] Advanced security features
-
----
-
-*Last updated: 2025-09-07*
+**Live URL**: https://oryo.vercel.app  
+**Repository**: https://github.com/PrajyotxD/oryo  
+**License**: MIT
