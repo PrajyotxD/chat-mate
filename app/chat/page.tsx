@@ -464,7 +464,7 @@ export default function Chat() {
       content: inputMessage || `Uploaded file: ${uploadedFile?.name}`,
       sender: "user",
       timestamp: new Date(),
-      file: fileData
+      file: fileData || undefined
     };
 
     const newMessages = [...messages, userMessage];
