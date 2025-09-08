@@ -152,26 +152,26 @@ export default function Onboarding() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-2xl border border-white/20"
+          className="bg-white/10 backdrop-blur-lg rounded-2xl p-4 sm:p-8 w-full max-w-md sm:max-w-2xl border border-white/20"
         >
           {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">
+          <div className="text-center mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-2">
               Setup Oryo
             </h1>
-            <p className="text-gray-300">
+            <p className="text-sm sm:text-base text-gray-300">
               Choose your AI provider and enter your API key to get started
             </p>
           </div>
 
           {/* Provider Selection */}
-          <div className="mb-6">
-            <h2 className="text-xl font-semibold mb-4 text-white text-center">Select AI Provider</h2>
-            <div className="grid grid-cols-2 gap-3">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 text-white text-center">Select AI Provider</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
               {providers.map((provider) => (
                 <div 
                   key={provider.id}
-                  className={`cursor-pointer transition-all duration-300 bg-white/5 backdrop-blur-sm rounded-xl p-4 border ${
+                  className={`cursor-pointer transition-all duration-300 bg-white/5 backdrop-blur-sm rounded-xl p-3 sm:p-4 border ${
                     selectedProvider === provider.id
                       ? "border-blue-400 bg-blue-500/20"
                       : "border-white/20 hover:border-white/40"
@@ -180,10 +180,10 @@ export default function Onboarding() {
                 >
                   <div className="text-center">
                     <div
-                      className={`w-8 h-8 rounded-full bg-gradient-to-r ${provider.color} mx-auto mb-2`}
+                      className={`w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r ${provider.color} mx-auto mb-2`}
                     />
-                    <h3 className="text-sm font-semibold text-white">{provider.name}</h3>
-                    <p className="text-xs text-gray-300">{provider.description}</p>
+                    <h3 className="text-xs sm:text-sm font-semibold text-white">{provider.name}</h3>
+                    <p className="text-xs text-gray-300 hidden sm:block">{provider.description}</p>
                   </div>
                 </div>
               ))}
