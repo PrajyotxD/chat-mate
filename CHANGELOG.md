@@ -1,78 +1,85 @@
-# Oryo - Changelog
+# Changelog
 
-## Version 1.0.0 - Complete Rebrand & Launch
+All notable changes to Oryo will be documented in this file.
 
-### 🎯 Project Rebrand
-- **Renamed** from ChatMate to **Oryo**
-- Updated all branding, logos, and references
-- Changed project folder name to `oryo`
-- Updated GitHub repository: https://github.com/PrajyotxD/oryo
-- Deployed to Vercel: https://oryo.vercel.app
+## [1.2.0] - 2025-09-08
+
+### 🔐 Authentication System
+- **ADDED** Real Google OAuth authentication via Supabase
+- **ADDED** Auth context provider for session management
+- **ADDED** Auth callback page for OAuth flow handling
+- **ADDED** Automatic session restoration from URL tokens
+- **FIXED** Mobile OAuth redirect issues
+- **FIXED** Supabase Site URL configuration
+- **REMOVED** Skip authentication options - now required for all users
+
+### 📊 Analytics & Tracking
+- **ADDED** Vercel Analytics integration
+- **ADDED** Google Analytics with gtag implementation
+- **ADDED** Analytics utility for event tracking
+- **ADDED** Login/logout event tracking
+- **ADDED** Error tracking for authentication failures
 
 ### 🎨 UI/UX Improvements
-- **Landing Page Redesign**
-  - Removed "View Comet Demo" button
-  - Updated feature cards to match login page style
-  - Added Aurora background with animations
-  - Responsive design for all screen sizes
-  - Clean, modern card layout with backdrop blur
+- **UPDATED** Onboarding page to match login card style
+- **FIXED** Responsive design for mobile devices
+- **ADDED** Loading states for authentication
+- **IMPROVED** Error handling with user-friendly messages
+- **ADDED** Toast notifications for auth feedback
 
-- **Login Page**
-  - Streamlined Google OAuth integration
-  - Glass morphism design with backdrop blur
-  - Consistent styling with landing page
+### 🔧 Technical Improvements
+- **FIXED** TypeScript errors in toast reducer
+- **ADDED** Proper error boundaries and fallbacks
+- **IMPROVED** Environment variable handling
+- **ADDED** Dynamic OAuth redirect URLs
+- **FIXED** Session management for mobile browsers
 
-- **Chat Interface**
-  - Modern sidebar with user profile
-  - Real-time typing indicators
-  - File upload with drag & drop support
-  - Export functionality (TXT/JSON)
-  - Search through chat history
-  - Personality mode switching
+### 🛡️ Security Enhancements
+- **ENFORCED** Authentication requirement for all pages
+- **ADDED** Proper auth guards on protected routes
+- **IMPROVED** Token handling and cleanup
+- **ADDED** Secure session restoration
 
-### 🔧 Technical Updates
-- **Framework**: Next.js 15 + React 19 + TypeScript
-- **Styling**: Tailwind CSS v4 + ShadCN UI + Aceternity UI
-- **Animations**: Framer Motion for smooth interactions
-- **Icons**: Lucide React icon library
-- **Authentication**: Supabase (optional)
+### 📱 Mobile Support
+- **FIXED** OAuth flow on mobile browsers
+- **FIXED** URL fragment handling for mobile auth
+- **IMPROVED** Responsive design across all pages
+- **FIXED** Touch interactions and mobile UX
 
-### 🚀 Features Added
-- **Multiple AI Providers**: OpenAI, Groq, Anthropic, Gemini
-- **Personality Modes**: Study Buddy, Code Helper, Casual Chat + custom
-- **File Support**: Images, text files, PDFs, JSON
-- **Chat Management**: History, tagging, search, export
-- **Voice Input**: Speech-to-text (HTTPS required)
-- **Keyboard Shortcuts**: 
-  - Ctrl+K (new chat)
-  - Ctrl+/ (search)
-  - Ctrl+Enter (send)
-- **Privacy First**: API keys stored locally
+### 🚀 Deployment
+- **CONFIGURED** Vercel deployment pipeline
+- **ADDED** Environment variable documentation
+- **FIXED** Build process and TypeScript compilation
+- **OPTIMIZED** Bundle size and performance
 
-### 🔄 Data Migration
-- Updated localStorage keys from `chatmate_*` to `oryo_*`
-- Export filenames changed to `oryo-conversation-*`
-- Maintained backward compatibility for existing users
+### 📝 Documentation
+- **UPDATED** README with authentication setup guide
+- **ADDED** Environment variable examples
+- **IMPROVED** Setup instructions for Supabase
+- **ADDED** Google OAuth configuration guide
 
-### 🛠️ Development Setup
-```bash
-npm install
-npm run dev
-```
+## [1.1.0] - Previous Version
 
-### 📦 Deployment
-- **Platform**: Vercel
-- **Auto-deployment**: Connected to GitHub master branch
-- **Environment**: Production ready with optimizations
+### Core Features
+- Multi-provider AI chat (OpenAI, Groq, Anthropic, Gemini)
+- Personality modes and custom personalities
+- File upload support (images, PDFs, text, JSON)
+- Chat history with tagging system
+- Real-time streaming responses
+- Voice input support
+- Export functionality (TXT, JSON)
+- Search through chat history
+- Keyboard shortcuts
+- Drag & drop file upload
+- Privacy-first API key storage
 
-### 🎯 Next Steps
-- Add Supabase environment variables for authentication
-- Implement additional AI provider integrations
-- Add more personality modes
-- Enhance file processing capabilities
+### Technical Stack
+- Next.js 15 + React 19 + TypeScript
+- Tailwind CSS v4 + ShadCN UI + Aceternity UI
+- Framer Motion animations
+- Lucide React icons
+- Local storage for API keys
 
 ---
 
-**Live URL**: https://oryo.vercel.app  
-**Repository**: https://github.com/PrajyotxD/oryo  
-**License**: MIT
+**Note**: This changelog follows [Keep a Changelog](https://keepachangelog.com/) format.
