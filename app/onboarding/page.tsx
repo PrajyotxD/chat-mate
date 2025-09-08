@@ -148,46 +148,43 @@ export default function Onboarding() {
 
   return (
     <AuroraBackground>
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-4">
+      <div className="min-h-screen flex items-center justify-center p-4 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="w-full max-w-4xl"
+          className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 w-full max-w-2xl border border-white/20"
         >
           {/* Header */}
-          <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">
               Setup Oryo
             </h1>
-            <p className="text-lg text-muted-foreground">
+            <p className="text-gray-300">
               Choose your AI provider and enter your API key to get started
             </p>
           </div>
 
           {/* Provider Selection */}
-          <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-6 text-center">Select AI Provider</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold mb-4 text-white text-center">Select AI Provider</h2>
+            <div className="grid grid-cols-2 gap-3">
               {providers.map((provider) => (
                 <div 
                   key={provider.id}
-                  className={`cursor-pointer transition-all duration-300 ${
+                  className={`cursor-pointer transition-all duration-300 bg-white/5 backdrop-blur-sm rounded-xl p-4 border ${
                     selectedProvider === provider.id
-                      ? "border border-white"
-                      : "hover:border-white/20"
+                      ? "border-blue-400 bg-blue-500/20"
+                      : "border-white/20 hover:border-white/40"
                   }`}
                   onClick={() => setSelectedProvider(provider.id)}
                 >
-                  <CometCard>
-                    <div className="text-center p-6 rounded-2xl">
-                      <div
-                        className={`w-12 h-12 rounded-full bg-gradient-to-r ${provider.color} mx-auto mb-2`}
-                      />
-                      <h3 className="text-lg font-semibold">{provider.name}</h3>
-                      <p className="text-sm text-muted-foreground">{provider.description}</p>
-                    </div>
-                  </CometCard>
+                  <div className="text-center">
+                    <div
+                      className={`w-8 h-8 rounded-full bg-gradient-to-r ${provider.color} mx-auto mb-2`}
+                    />
+                    <h3 className="text-sm font-semibold text-white">{provider.name}</h3>
+                    <p className="text-xs text-gray-300">{provider.description}</p>
+                  </div>
                 </div>
               ))}
             </div>
